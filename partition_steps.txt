@@ -1,0 +1,17 @@
+create table if not exists create_dataset.table_name as select * FROM public-data-finance.crypto_ethereum2.load_metadata
+
+create table create_dataset.table_name_new(
+  chain	STRING,
+  load_all_partitions	BOOLEAN,
+  ds	DATE,
+  run_id	STRING,
+  complete_at	TIMESTAMP
+)
+PARTITION BY
+  date_trunc(complete_at, month)
+  cluster by chain,load_all_partitions;
+
+insert into create_dataset.table_name_new select * from create_dataset.table_name;
+
+select * from  create_dataset.table_name_new where complete_at = '2023-05-26'
+select * from  create_dataset.table_name where ds = '2023-05-26'
