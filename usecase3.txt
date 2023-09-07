@@ -1,0 +1,123 @@
+C:\Users\HP\AppData\Local\Google\Cloud SDK>gsutil ls
+gs://bucket_name1/
+gs://bucket_peru/
+gs://ganesh_19/
+gs://ganesh_b2/
+gs://ganesh_usecase/
+
+C:\Users\HP\AppData\Local\Google\Cloud SDK>gsutil cp C:\Users\HP\Downloads\empid_usecase3.csv gs://ganesh_usecase
+Copying file://C:\Users\HP\Downloads\empid_usecase3.csv [Content-Type=application/vnd.ms-excel]...
+- [1 files][898.3 KiB/898.3 KiB]
+Operation completed over 1 objects/898.3 KiB.
+
+C:\Users\HP\AppData\Local\Google\Cloud SDK>gsutil ls gs://ganesh_usecase
+gs://ganesh_usecase/Repurchase_Product.csv
+gs://ganesh_usecase/empid_usecase3.csv
+
+C:\Users\HP\AppData\Local\Google\Cloud SDK>gsutil rm gs://ganesh_usecase gs://ganesh_usecase/empid_usecase3.csv
+Omitting bucket "gs://ganesh_usecase/". (Did you mean to do rm -r?)
+Removing gs://ganesh_usecase/empid_usecase3.csv...
+/ [1 objects]
+Operation completed over 1 objects.
+
+C:\Users\HP\AppData\Local\Google\Cloud SDK>gsutil rm gs://ganesh_usecase gs://ganesh_usecase/Repurchase_Product.csv
+Omitting bucket "gs://ganesh_usecase/". (Did you mean to do rm -r?)
+Removing gs://ganesh_usecase/Repurchase_Product.csv...
+/ [1 objects]
+Operation completed over 1 objects.
+
+C:\Users\HP\AppData\Local\Google\Cloud SDK>
+C:\Users\HP\AppData\Local\Google\Cloud SDK>gsutil cp C:\Users\HP\Downloads\empid_usecase3.csv gs://ganesh_usecase
+Copying file://C:\Users\HP\Downloads\empid_usecase3.csv [Content-Type=application/vnd.ms-excel]...
+- [1 files][898.3 KiB/898.3 KiB]
+Operation completed over 1 objects/898.3 KiB.
+
+C:\Users\HP\AppData\Local\Google\Cloud SDK>bq mk -d dataset_usecase3
+Dataset 'g1-project-1919:dataset_usecase3' successfully created.
+
+C:\Users\HP\AppData\Local\Google\Cloud SDK>bq mk -t dataset_usecase3.usecase3_stage_tab cust_idfirst_namelast_namegenderip_addressmac_idclient_namemail_idurl_app_nameph_numbercredit_card_bandcard_isu_datecur_codevalid_cardcard_typecurrency_codeaccess_codelst_trns_dtguidstock_symemp_role
+Table 'g1-project-1919:dataset_usecase3.usecase3_stage_tab' successfully created.
+
+C:\Users\HP\AppData\Local\Google\Cloud SDK>bq mk -t dataset_usecase3.usecase3_stage_tab cust_id:STRING,first_name:STRING,last_name:STRING,gender:STRING,ip_address:STRING,mac_id:STRING,client_name:STRING,mail_id:STRING,url_:STRING,app_name:STRING,ph_number:STRING,credit_card_band:STRING,card_isu_date:STRING,cur_code:STRING,valid_card:STRING,card_type:STRING,currency_code:STRING,access_code:STRING,lst_trns_dt:STRING,guid:STRING,stock_sym:STRING,emp_role:STRING
+Table 'g1-project-1919:dataset_usecase3.usecase3_stage_tab' successfully created.
+
+C:\Users\HP\AppData\Local\Google\Cloud SDK>bq show dataset_usecase3.usecase3_stage_tab
+Table g1-project-1919:dataset_usecase3.usecase3_stage_tab
+
+   Last modified              Schema              Total Rows   Total Bytes   Expiration   Time Partitioning   Clustered Fields   Total Logical Bytes   Total Physical Bytes   Labels
+ ----------------- ----------------------------- ------------ ------------- ------------ ------------------- ------------------ --------------------- ---------------------- --------
+  07 Sep 16:12:27   |- cust_id: string            0            0                                                                 0                                      
+                    |- first_name: string                                                                                                                               
+                    |- last_name: string                                                                                                                                
+                    |- gender: string                                                                                                                                   
+                    |- ip_address: string                                                                                                                               
+                    |- mac_id: string                                                                                                                                   
+                    |- client_name: string                                                                                                                              
+                    |- mail_id: string                                                                                                                                  
+                    |- url_: string                                                                                                                                     
+                    |- app_name: string                                                                                                                                 
+                    |- ph_number: string                                                                                                                                
+                    |- credit_card_band: string                                                                                                                         
+                    |- card_isu_date: string                                                                                                                            
+                    |- cur_code: string                                                                                                                                 
+                    |- valid_card: string                                                                                                                               
+                    |- card_type: string                                                                                                                                
+                    |- currency_code: string                                                                                                                            
+                    |- access_code: string                                                                                                                              
+                    |- lst_trns_dt: string                                                                                                                              
+                    |- guid: string                                                                                                                                     
+                    |- stock_sym: string                                                                                                                                
+                    |- emp_role: string                                                                                                                                 
+
+
+C:\Users\HP\AppData\Local\Google\Cloud SDK>gsutil ls gs://ganesh_usecase
+gs://ganesh_usecase/empid_usecase3.csv
+
+C:\Users\HP\AppData\Local\Google\Cloud SDK>bq load --source_format=CSV -skip_leading_rows=1 dataset_usecase3.usecase3_stage_tab gs://ganesh_usecase/empid_usecase3.csv
+Waiting on bqjob_r1d68e463e263dd72_0000018a6f40e61c_1 ... (1s) Current status: DONE
+
+C:\Users\HP\AppData\Local\Google\Cloud SDK>bq mk -d usecase3_history
+Dataset 'g1-project-1919:usecase3_history' successfully created.
+
+
+C:\Users\HP\AppData\Local\Google\Cloud SDK>bq mk -t usecase3_history.usecase3_history_tab cust_id:INTEGER,final_name:STRING,gender:STRING,ip_address:STRING,mac_id:STRING,client_name:STRING,mail_id:STRING,url_:STRING,app_name:STRING,ph_number:INT64,credit_card_band:STRING,card_isu_date:DATE,cur_code:STRING,valid_card:BOOLEAN,card_type:STRING,currency_code:STRING,access_code:STRING,lst_trns_dt:INT64,guid:STRING,stock_sym:STRING,emp_role:STRING,created_time:TIMESTAMP
+Table 'g1-project-1919:usecase3_history.usecase3_history_tab' successfully created.
+
+C:\Users\HP\AppData\Local\Google\Cloud SDK>bq show usecase3_history.usecase3_history_tab
+Table g1-project-1919:usecase3_history.usecase3_history_tab
+
+C:\Users\HP\AppData\Local\Google\Cloud SDK>bq query --use_legacy_sql=false insert usecase3_history.usecase3_history_tab select safe_cast(cust_id as Integer)as customer_id,concat(first_name,' ',last_name) as full_name,gender string,ip_address string,mac_id string,client_name string,mail_id string,url_ string,app_name string,safe_cast(ph_number as int64),credit_card_band string,CASE when card_isu_date LIKE '%/%' THEN parse_date('%m/%d/%Y',card_isu_date)WHEN card_isu_date LIKE '%-%' THEN PARSE_DATE('%m-%d-%Y',card_isu_date)END card_date,cur_code string,safe_cast(valid_card as boolean),card_type string,currency_code string,access_code string,safe_cast(lst_trns_dt as Integer),guid as string,stock_sym string,emp_role string,current_timestamp as created_time from dataset_usecase3.usecase3_stage_tab
+Waiting on bqjob_r366782145a59d64f_0000018a6fe0abc1_1 ... (1s) Current status: DONE
+Number of affected rows: 1000
+
+C:\Users\HP\AppData\Local\Google\Cloud SDK>
+C:\Users\HP\AppData\Local\Google\Cloud SDK>bq query --use_legacy_sql=false create view usecase3_history.usecase3_history_views as select * from usecase3_history.usecase3_history_tab
+Waiting on bqjob_r9cab6485d3622e6_0000018a6fe2d0a4_1 ... (0s) Current status: DONE
+Created g1-project-1919.usecase3_history.usecase3_history_views
+
+Audit table :
+create table usecase_audit_stage.stage_audit (
+  dataset_name string,
+  table_name string,
+  date_audit date,
+  total_records int64,
+  audited_by string
+)
+insert into `usecase_audit_stage.stage_audit`
+select 
+'usecase_audit_stage' as dataset_name,
+'stage_audit' as table_name,
+current_date() as date_audit,
+count(*) as total_records,
+'ganesh_pr_1' as audited_by
+from 
+dataset_usecase3.usecase3_stage_tab
+
+
+create table usecase_audit_stage.history_audit (
+  dataset_name string,
+  table_name string,
+  date_audit date,
+  total_records int64,
+  audited_by string
+)
